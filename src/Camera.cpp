@@ -69,11 +69,16 @@ void Camera::init_camera()
         return;
     }
 }
+
+uint8_t *rgb_image = new uint8_t[57600];       // set limit 57600
+uint8_t *downscaled_image = new uint8_t[2304]; // set limit 2304
+uint8_t *zoomed_in = new uint8_t[1200];        // set limit 2304
+uint8_t *color_output = new uint8_t[1200];     // set limit 2304
+
 void Camera::make_picture()
 {
     camera_fb_t *fb = NULL;
 
-    // Take Picture with Camera
     fb = esp_camera_fb_get();
     if (!fb)
     {
@@ -82,21 +87,120 @@ void Camera::make_picture()
     }
     else
     {
-        Serial.println("Camera captured");
+        fmt2rgb888(fb->buf, fb->len, PIXFORMAT_JPEG, rgb_image);
+        Serial.println("Camera captured and stored");
     }
+
     esp_camera_fb_return(fb);
 };
 
-void Camera::downscale(){
+void Camera::downscale()
+{
+    memset(downscaled_image, 0, 2304);
+    for (int y_out = 0; y_out < 24; ++y_out)
+    {
+        for (int x_out = 0; x_out < 32; ++x_out)
+        {
+            int x_start = x_out * (160 / 32);
+            int y_start = y_out * (120 / 24);
+            int x_end = (x_out + 1) * (160 / 32);
+            int y_end = (y_out + 1) * (120 / 24);
+            int sumR = 0, sumG = 0, sumB = 0;
+            for (int y = y_start; y < y_end; ++y)
+            {
+                for (int x = x_start; x < x_end; ++x)
+                {
+                    int index = (y * 160 + x) * 3;
+                    sumR += rgb_image[index];
+                    sumG += rgb_image[index + 1];
+                    sumB += rgb_image[index + 2];
+                }
+            }
+            int avgR = sumR / ((x_end - x_start) * (y_end - y_start));
+            int avgG = sumG / ((x_end - x_start) * (y_end - y_start));
+            int avgB = sumB / ((x_end - x_start) * (y_end - y_start));
 
+            int outIndex = (y_out * 32 + x_out) * 3;
+            downscaled_image[outIndex] = static_cast<uint8_t>(avgR);
+            downscaled_image[outIndex + 1] = static_cast<uint8_t>(avgG);
+            downscaled_image[outIndex + 2] = static_cast<uint8_t>(avgB);
+            Serial.print(avgR);
+            Serial.print(" ");
+            Serial.print(avgG);
+            Serial.print(" ");
+            Serial.print(avgB);
+            Serial.print(" ");
+        }
+    }
+    Serial.println("downscaled sucessfully");
 };
 
-void Camera::zoom_in(){
+void Camera::zoom_in()
+{
+    int zoomedInIndex = 0;
+    int lineoffset = 0;
+    int originalIndex = 210;
+    for (int y = 0; y < 20; ++y)
+    {
+        for (int x = 0; x < 20; ++x)
+        {
 
+            Serial.print(abs(downscaled_image[originalIndex] - 20)); // no negiteve no lower than 0 todo not abs
+            Serial.print(" ");
+            zoomed_in[zoomedInIndex] = abs(downscaled_image[originalIndex] - 20);
+
+            Serial.print(downscaled_image[originalIndex + 1]);
+            Serial.print(" ");
+            zoomed_in[zoomedInIndex + 1] = downscaled_image[originalIndex + 1];
+
+            Serial.print(downscaled_image[originalIndex + 2]);
+            Serial.print(" ");
+            zoomed_in[zoomedInIndex + 2] = downscaled_image[originalIndex + 2];
+            zoomedInIndex = zoomedInIndex + 3;
+            originalIndex = originalIndex + 3;
+        }
+        lineoffset = lineoffset + 36;
+        originalIndex = originalIndex + 36;
+    }
+
+    // Serial.println("zoomed in");
 };
 
-void Camera::convert_to_color(){
-
+void Camera::convert_to_color()
+{
+    int index = 0;
+    for (int y = 0; y < 20; ++y)
+    {
+        for (int x = 0; x < 20; ++x)
+        {
+            if (zoomed_in[index] < 100 && zoomed_in[index + 1] < 100 && zoomed_in[index + 2] < 100)
+            {
+                Serial.print(0);
+                Serial.print(" ");
+                Serial.print(0);
+                Serial.print(" ");
+                Serial.print(0);
+                Serial.print(" ");
+                color_output[index] = 0;
+                color_output[index + 1] = 0;
+                color_output[index + 2] = 0;
+            }
+            else
+            {
+                Serial.print(255);
+                Serial.print(" ");
+                Serial.print(255);
+                Serial.print(" ");
+                Serial.print(255);
+                Serial.print(" ");
+                color_output[index] = 255;
+                color_output[index + 1] = 255;
+                color_output[index + 2] = 255;
+            }
+            index = index + 3;
+        };
+    };
+    Serial.println("converted color");
 };
 
 void Camera::get_colored_image(){

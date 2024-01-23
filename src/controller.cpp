@@ -16,12 +16,16 @@ void setup()
   Serial.println(result);
   cam.init_camera();
   cam.make_picture();
+  cam.downscale();
+  cam.zoom_in();
+  cam.convert_to_color();
   delay(5000);
 }
 
 void loop()
 {
-  cam.make_picture();
+  // cam.make_picture();
+
   delay(100);
 }
 
