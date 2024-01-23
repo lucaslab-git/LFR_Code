@@ -185,6 +185,18 @@ void Camera::convert_to_color()
                 color_output[index + 1] = 0;
                 color_output[index + 2] = 0;
             }
+            else if (zoomed_in[index] < 100 && zoomed_in[index + 1] > 120 && zoomed_in[index + 2] < 100)
+            {
+                Serial.print(0);
+                Serial.print(" ");
+                Serial.print(255);
+                Serial.print(" ");
+                Serial.print(0);
+                Serial.print(" ");
+                color_output[index] = 0;
+                color_output[index + 1] = 255;
+                color_output[index + 2] = 0;
+            }
             else
             {
                 Serial.print(255);
