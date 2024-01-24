@@ -1,3 +1,4 @@
+#include "Arduino.h"
 enum side
 {
     right,
@@ -14,11 +15,11 @@ class Motor
 {
 private:
     int mounting_offset;
-    int p_fw;
-    int p_bw;
+    u_int8_t p_fw;
+    u_int8_t p_bw;
 
 public:
-    Motor(int mounting_deg, int pin_fw, int pin_bw); // pinMode(Output) wenn nicht in main setup
+    Motor(int mounting_deg, u_int8_t pin_fw, u_int8_t pin_bw); // pinMode(Output) wenn nicht in main setup
     ~Motor();
     void drive_direction(int degree);
     void stop();
