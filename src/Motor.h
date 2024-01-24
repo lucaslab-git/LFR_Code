@@ -13,9 +13,12 @@ enum dir
 class Motor
 {
 private:
-    /* data */
+    int mounting_offset;
+    uint8_t p_fw;
+    uint8_t p_bw;
+
 public:
-    Motor(int val);
+    Motor(int mounting_deg, uint8_t pin_fw, uint8_t pin_bw);
     ~Motor();
     void drive_direction(int degree);
     void stop();
