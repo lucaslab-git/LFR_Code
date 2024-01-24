@@ -4,6 +4,9 @@
 Motor::Motor(int mounting_deg, int pin_fw, int pin_bw)
 {
     // pinMode(Output) wenn nicht in main setup
+    Serial.println(mounting_deg);
+    Serial.println(pin_fw);
+    Serial.println(pin_bw);
     mounting_offset = mounting_deg;
     p_fw = pin_fw;
     p_bw = pin_bw;
