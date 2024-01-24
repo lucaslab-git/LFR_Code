@@ -70,10 +70,7 @@ void Camera::init_camera()
     }
 }
 
-uint8_t *rgb_image = new uint8_t[57600];       // set limit 57600
-uint8_t *downscaled_image = new uint8_t[2304]; // set limit 2304
-uint8_t *zoomed_in = new uint8_t[1200];        // set limit 2304
-uint8_t *color_output = new uint8_t[1200];     // set limit 2304
+uint8_t *rgb_image = new uint8_t[57600]; // set limit 57600
 
 void Camera::make_picture()
 {
@@ -93,6 +90,8 @@ void Camera::make_picture()
 
     esp_camera_fb_return(fb);
 };
+
+uint8_t *downscaled_image = new uint8_t[2304]; // set limit 2304
 
 void Camera::downscale()
 {
@@ -135,6 +134,8 @@ void Camera::downscale()
     Serial.println("downscaled sucessfully");
 };
 
+uint8_t *zoomed_in = new uint8_t[1200]; // set limit 2304
+
 void Camera::zoom_in()
 {
     int zoomedInIndex = 0;
@@ -166,9 +167,13 @@ void Camera::zoom_in()
     // Serial.println("zoomed in");
 };
 
+uint8_t *color_output = new uint8_t[1200]; // set limit 2304
+color *color_array = new color[400];       // set limit 2304
+
 void Camera::convert_to_color()
 {
     int index = 0;
+    int color_array_index = 0;
     for (int y = 0; y < 20; ++y)
     {
         for (int x = 0; x < 20; ++x)
@@ -184,6 +189,7 @@ void Camera::convert_to_color()
                 color_output[index] = 0;
                 color_output[index + 1] = 0;
                 color_output[index + 2] = 0;
+                color_array[color_array_index++] = white;
             }
             else if (zoomed_in[index] < 100 && zoomed_in[index + 1] > 120 && zoomed_in[index + 2] < 100)
             {
@@ -196,6 +202,7 @@ void Camera::convert_to_color()
                 color_output[index] = 0;
                 color_output[index + 1] = 255;
                 color_output[index + 2] = 0;
+                color_array[color_array_index++] = green;
             }
             else
             {
@@ -208,6 +215,7 @@ void Camera::convert_to_color()
                 color_output[index] = 255;
                 color_output[index + 1] = 255;
                 color_output[index + 2] = 255;
+                color_array[color_array_index++] = black;
             }
             index = index + 3;
         };
@@ -215,6 +223,7 @@ void Camera::convert_to_color()
     Serial.println("converted color");
 };
 
-void Camera::get_colored_image(){
-
+color Camera::get_colored_image(int index)
+{
+    return color_array[index];
 };

@@ -1,8 +1,18 @@
 enum side
 {
     left,
-    right
+    right,
+    none
 };
+enum color
+{
+    white,
+    black,
+    green,
+    red,
+    grey
+};
+
 class Detector
 {
 private:

@@ -1,4 +1,14 @@
 #pragma once
+
+enum color
+{
+    white,
+    black,
+    green,
+    red,
+    grey
+};
+
 class Camera
 {
 private:
@@ -11,5 +21,5 @@ public:
     void downscale();
     void zoom_in();
     void convert_to_color();
-    void get_colored_image();
+    color get_colored_image(int index);
 };
