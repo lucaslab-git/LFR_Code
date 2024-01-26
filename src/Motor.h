@@ -14,12 +14,13 @@ enum dir
 class Motor
 {
 private:
+    int friction_offset;
     int mounting_offset;
     u_int8_t p_fw;
     u_int8_t p_bw;
 
 public:
-    Motor(int mounting_deg, u_int8_t pin_fw, u_int8_t pin_bw); // pinMode(Output) wenn nicht in main setup
+    Motor(int mounting_deg, u_int8_t pin_fw, u_int8_t pin_bw, int friction_tuning); // pinMode(Output) wenn nicht in main setup
     ~Motor();
     void drive_direction(int degree);
     void stop();
