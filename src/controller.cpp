@@ -18,39 +18,40 @@ void setup()
   m3.stop();
 
   delay(1000);
+
+  cam.init_camera();
+  cam.make_picture();
+  cam.downscale();
+  cam.zoom_in();
+  cam.convert_to_color();
+
+  delay(2000);
+
   /*
-    cam.init_camera();
-    cam.make_picture();
-    cam.downscale();
-    cam.zoom_in();
-    cam.convert_to_color();
+   m1.drive_direction(0);
+   m2.drive_direction(0);
+   m3.drive_direction(0);
 
-    delay(2000);
-  */
-  m1.drive_direction(0);
-  m2.drive_direction(0);
-  m3.drive_direction(0);
+   delay(1000);
 
-  delay(1000);
+   m1.drive_direction(180);
+   m2.drive_direction(180);
+   m3.drive_direction(180);
 
-  m1.drive_direction(180);
-  m2.drive_direction(180);
-  m3.drive_direction(180);
+   delay(1000);
 
-  delay(1000);
+   m1.drive_direction(270);
+   m2.drive_direction(270);
+   m3.drive_direction(270);
 
-  m1.drive_direction(270);
-  m2.drive_direction(270);
-  m3.drive_direction(270);
+   delay(1000);
 
-  delay(1000);
+   m1.drive_direction(90);
+   m2.drive_direction(90);
+   m3.drive_direction(90);
 
-  m1.drive_direction(90);
-  m2.drive_direction(90);
-  m3.drive_direction(90);
-
-  delay(1000);
-
+   delay(1000);
+   */
   m1.stop();
   m2.stop();
   m3.stop();

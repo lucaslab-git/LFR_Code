@@ -131,7 +131,7 @@ void Camera::downscale()
             Serial.print(" ");
         }
     }
-    Serial.println("downscaled sucessfully");
+    Serial.println("\e[1;31m downscaled sucessfully \e[1;37m");
 };
 
 uint8_t *zoomed_in = new uint8_t[1200]; // set limit 2304
@@ -145,26 +145,28 @@ void Camera::zoom_in()
     {
         for (int x = 0; x < 20; ++x)
         {
-
-            Serial.print(abs(downscaled_image[originalIndex] - 20)); // no negiteve no lower than 0 todo not abs
-            Serial.print(" ");
-            zoomed_in[zoomedInIndex] = abs(downscaled_image[originalIndex] - 20);
-
-            Serial.print(downscaled_image[originalIndex + 1]);
-            Serial.print(" ");
-            zoomed_in[zoomedInIndex + 1] = downscaled_image[originalIndex + 1];
-
-            Serial.print(downscaled_image[originalIndex + 2]);
-            Serial.print(" ");
-            zoomed_in[zoomedInIndex + 2] = downscaled_image[originalIndex + 2];
+            int red = downscaled_image[originalIndex];
+            int green = downscaled_image[originalIndex + 1];
+            int blue = downscaled_image[originalIndex + 2];
+            Serial.print("\e[48;2;");
+            Serial.print(red);
+            Serial.print(";");
+            Serial.print(green);
+            Serial.print(";");
+            Serial.print(blue);
+            Serial.print("m   ");
+            zoomed_in[zoomedInIndex] = red;
+            zoomed_in[zoomedInIndex + 1] = green;
+            zoomed_in[zoomedInIndex + 2] = blue;
             zoomedInIndex = zoomedInIndex + 3;
             originalIndex = originalIndex + 3;
         }
+        Serial.println("\e[0m");
         lineoffset = lineoffset + 36;
         originalIndex = originalIndex + 36;
     }
 
-    // Serial.println("zoomed in");
+    // Serial.print("zoomed in");
 };
 
 uint8_t *color_output = new uint8_t[1200]; // set limit 2304
@@ -180,12 +182,15 @@ void Camera::convert_to_color()
         {
             if (zoomed_in[index] < 100 && zoomed_in[index + 1] < 100 && zoomed_in[index + 2] < 100)
             {
+                Serial.print("\e[40m   ");
+                /*
                 Serial.print(0);
                 Serial.print(" ");
                 Serial.print(0);
                 Serial.print(" ");
                 Serial.print(0);
                 Serial.print(" ");
+                */
                 color_output[index] = 0;
                 color_output[index + 1] = 0;
                 color_output[index + 2] = 0;
@@ -193,12 +198,15 @@ void Camera::convert_to_color()
             }
             else if (zoomed_in[index] < 100 && zoomed_in[index + 1] > 120 && zoomed_in[index + 2] < 100)
             {
+                Serial.print("\e[42m   ");
+                /*
                 Serial.print(0);
                 Serial.print(" ");
                 Serial.print(255);
                 Serial.print(" ");
                 Serial.print(0);
                 Serial.print(" ");
+                */
                 color_output[index] = 0;
                 color_output[index + 1] = 255;
                 color_output[index + 2] = 0;
@@ -206,12 +214,15 @@ void Camera::convert_to_color()
             }
             else
             {
+                Serial.print("\e[47m   ");
+                /*
                 Serial.print(255);
                 Serial.print(" ");
                 Serial.print(255);
                 Serial.print(" ");
                 Serial.print(255);
                 Serial.print(" ");
+                */
                 color_output[index] = 255;
                 color_output[index + 1] = 255;
                 color_output[index + 2] = 255;
@@ -219,7 +230,8 @@ void Camera::convert_to_color()
             }
             index = index + 3;
         };
-    };
+        Serial.println("\e[0m");
+    }
     Serial.println("converted color");
 };
 
