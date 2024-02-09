@@ -136,16 +136,16 @@ void Camera::downscale()
     Serial.println("\e[1;31m downscaled sucessfully \e[1;37m");
 };
 
-uint8_t *zoomed_in = new uint8_t[1200]; // set limit 2304
+uint8_t *zoomed_in = new uint8_t[1728]; // set limit 2304
 
 void Camera::zoom_in()
 {
     int zoomedInIndex = 0;
     int lineoffset = 0;
-    int originalIndex = 210;
-    for (int y = 0; y < 20; ++y)
+    int originalIndex = 12;
+    for (int y = 0; y < 24; ++y)
     {
-        for (int x = 0; x < 20; ++x)
+        for (int x = 0; x < 24; ++x)
         {
             int red = downscaled_image[originalIndex];
             int green = downscaled_image[originalIndex + 1];
@@ -164,41 +164,26 @@ void Camera::zoom_in()
             originalIndex = originalIndex + 3;
         }
         Serial.println("\e[0m");
-        lineoffset = lineoffset + 36;
-        originalIndex = originalIndex + 36;
+        lineoffset = lineoffset + 24;
+        originalIndex = originalIndex + 24;
     }
 
     // Serial.print("zoomed in");
 };
 
-uint8_t *color_output = new uint8_t[1200]; // set limit 2304
-color *color_array = new color[400];       // set limit 2304
+uint8_t *color_output = new uint8_t[1728]; // set limit 2304
+color *color_array = new color[576];       // set limit 2304
 
 void Camera::convert_to_color()
 {
     int index = 0;
     int color_array_index = 0;
-    for (int y = 0; y < 20; ++y)
+    for (int y = 0; y < 24; ++y)
     {
-        for (int x = 0; x < 20; ++x)
+        for (int x = 0; x < 24; ++x)
         {
-            if (zoomed_in[index] < 100 && zoomed_in[index + 1] < 100 && zoomed_in[index + 2] < 100)
-            {
-                Serial.print("\e[40m   ");
-                /*
-                Serial.print(0);
-                Serial.print(" ");
-                Serial.print(0);
-                Serial.print(" ");
-                Serial.print(0);
-                Serial.print(" ");
-                */
-                color_output[index] = 0;
-                color_output[index + 1] = 0;
-                color_output[index + 2] = 0;
-                color_array[color_array_index++] = white;
-            }
-            else if (zoomed_in[index] < 100 && zoomed_in[index + 1] > 120 && zoomed_in[index + 2] < 100)
+            if (zoomed_in[index + 1] > 50 && zoomed_in[index + 1] > 50 && zoomed_in[index + 2] < 40 && zoomed_in[index + 1] > zoomed_in[index + 2] + 20)
+
             {
                 Serial.print("\e[42m   ");
                 /*
@@ -214,7 +199,24 @@ void Camera::convert_to_color()
                 color_output[index + 2] = 0;
                 color_array[color_array_index++] = green;
             }
+            else if (zoomed_in[index] < 120 && zoomed_in[index + 1] < 120 && zoomed_in[index + 2] < 120)
+            {
+                Serial.print("\e[40m   ");
+                /*
+                Serial.print(0);
+                Serial.print(" ");
+                Serial.print(0);
+                Serial.print(" ");
+                Serial.print(0);
+                Serial.print(" ");
+                */
+                color_output[index] = 0;
+                color_output[index + 1] = 0;
+                color_output[index + 2] = 0;
+                color_array[color_array_index++] = white;
+            }
             else
+
             {
                 Serial.print("\e[47m   ");
                 /*
