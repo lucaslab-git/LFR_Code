@@ -1,17 +1,30 @@
 #include <Arduino.h>
 // #include "Motor.h"
 #include "Camera.h"
+#include "FastLED.h"
 
 // Motor m1(0, 12, 13, 0);
 // Motor m2(120, 14, 15, 0);
 // Motor m3(240, 2, 18, 0);
 Camera cam;
 
+#define DATA_PIN 15
+#define NUM_LEDS 4
+
+CRGB led[NUM_LEDS];
+
 void setup()
 {
   Serial.begin(115200);
 
   Serial.println("Serial init");
+  FastLED.addLeds<WS2812B, DATA_PIN, GRB>(led, NUM_LEDS);
+  led[0] = CRGB(40, 32, 40);
+  led[1] = CRGB(40, 32, 40);
+  led[2] = CRGB(40, 32, 40);
+  led[3] = CRGB(40, 32, 40);
+
+  FastLED.show();
 
   //  m1.stop();
   // m2.stop();
@@ -52,7 +65,6 @@ void setup()
 
    delay(1000);
    */
-  
 }
 
 void loop()
