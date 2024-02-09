@@ -1,10 +1,10 @@
 #include <Arduino.h>
-#include "Motor.h"
+// #include "Motor.h"
 #include "Camera.h"
 
-Motor m1(0, 12, 13, 0);
-Motor m2(120, 14, 15, 0);
-Motor m3(240, 2, 16, 0);
+// Motor m1(0, 12, 13, 0);
+// Motor m2(120, 14, 15, 0);
+// Motor m3(240, 2, 18, 0);
 Camera cam;
 
 void setup()
@@ -13,9 +13,9 @@ void setup()
 
   Serial.println("Serial init");
 
-  m1.stop();
-  m2.stop();
-  m3.stop();
+  //  m1.stop();
+  // m2.stop();
+  // m3.stop();
 
   delay(1000);
 
@@ -52,9 +52,7 @@ void setup()
 
    delay(1000);
    */
-  m1.stop();
-  m2.stop();
-  m3.stop();
+  
 }
 
 void loop()

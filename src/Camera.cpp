@@ -123,13 +123,15 @@ void Camera::downscale()
             downscaled_image[outIndex] = static_cast<uint8_t>(avgR);
             downscaled_image[outIndex + 1] = static_cast<uint8_t>(avgG);
             downscaled_image[outIndex + 2] = static_cast<uint8_t>(avgB);
+            Serial.print("\e[48;2;");
             Serial.print(avgR);
-            Serial.print(" ");
+            Serial.print(";");
             Serial.print(avgG);
-            Serial.print(" ");
+            Serial.print(";");
             Serial.print(avgB);
-            Serial.print(" ");
+            Serial.print("m   ");
         }
+        Serial.println("\e[0m");
     }
     Serial.println("\e[1;31m downscaled sucessfully \e[1;37m");
 };
