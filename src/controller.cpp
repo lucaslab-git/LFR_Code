@@ -19,10 +19,10 @@ void setup()
 
   Serial.println("Serial init");
   FastLED.addLeds<WS2812B, DATA_PIN, GRB>(led, NUM_LEDS);
-  led[0] = CRGB(40, 32, 40);
-  led[1] = CRGB(40, 32, 40);
-  led[2] = CRGB(40, 32, 40);
-  led[3] = CRGB(40, 32, 40);
+  led[0] = CRGB(10, 6, 10);
+  led[1] = CRGB(10, 6, 10);
+  led[2] = CRGB(10, 6, 10);
+  led[3] = CRGB(10, 6, 10);
 
   FastLED.show();
 
