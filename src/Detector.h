@@ -1,25 +1,22 @@
+#include "Camera.h"
 enum side
 {
     left,
     right,
+    up,
+    down,
     none
 };
-enum color
-{
-    white,
-    black,
-    green,
-    red,
-    grey
-};
 
+// color enum from cam
 class Detector
 {
 private:
-    /* data */
+    int letzer_index = 0;
+
 public:
-    Detector(/* args */);
+    Detector();
     ~Detector();
-    int detect_line_direction(); // input colored_image in this function
+    int detect_line_direction(Camera pcam); // input colored_image in this function
     side detect_green_dot();
 };

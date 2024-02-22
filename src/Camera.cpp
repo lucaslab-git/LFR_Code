@@ -124,89 +124,76 @@ void Camera::downscale()
             downscaled_image[outIndex] = static_cast<uint8_t>(avgR);
             downscaled_image[outIndex + 1] = static_cast<uint8_t>(avgG);
             downscaled_image[outIndex + 2] = static_cast<uint8_t>(avgB);
-            Serial.print("\e[48;2;");
+            /*Serial.print("\e[48;2;");
             Serial.print(avgR);
             Serial.print(";");
             Serial.print(avgG);
             Serial.print(";");
             Serial.print(avgB);
-            Serial.print("m   ");
+            Serial.print("m   ");*/
         }
-        Serial.println("\e[0m");
+        // Serial.println("\e[0m");
     }
-    Serial.println("\e[1;31m downscaled sucessfully \e[1;37m");
+    // Serial.println("\e[1;31m downscaled sucessfully \e[1;37m");
 };
 
-pixel zoomed_in[24][24];
+pixel zoomed_in[20][20];
 
 void Camera::zoom_in()
 {
-    int zoomedInIndex = 0;
-    int lineoffset = 0;
-    int originalIndex = 12;
-    for (int y = 0; y < 24; ++y)
+    int originalIndex = 210;
+    for (int y = 0; y < 20; ++y)
     {
-        for (int x = 0; x < 24; ++x)
+        for (int x = 0; x < 20; ++x)
         {
             int red = downscaled_image[originalIndex];
             int green = downscaled_image[originalIndex + 1];
             int blue = downscaled_image[originalIndex + 2];
+            /*
             Serial.print("\e[48;2;");
             Serial.print(red);
             Serial.print(";");
             Serial.print(green);
             Serial.print(";");
             Serial.print(blue);
-            Serial.print("m   ");
+            Serial.print("m   ");*/
             zoomed_in[x][y].red = red;
             zoomed_in[x][y].green = green;
             zoomed_in[x][y].blue = blue;
-            zoomedInIndex = zoomedInIndex + 3;
             originalIndex = originalIndex + 3;
         }
-        Serial.println("\e[0m");
-        lineoffset = lineoffset + 24;
-        originalIndex = originalIndex + 24;
+        // Serial.println("\e[0m");
+        originalIndex = originalIndex + 36;
     }
 
-    Serial.println("\e[1;31m zoomed in sucessfully \e[1;37m");
+    // Serial.println("\e[1;31m zoomed in sucessfully \e[1;37m");
 };
 
-uint8_t *color_output = new uint8_t[1728]; // set limit 2304
-color color_array[24][24];                 // set limit 2304
+// color color_array[24][24];                 // public attribut
 
 void Camera::convert_to_color()
 {
-    int index = 0;
-
-    for (int y = 0; y < 24; ++y)
+    for (int y = 0; y < 20; ++y)
     {
-        for (int x = 0; x < 24; ++x)
+        for (int x = 0; x < 20; ++x)
         {
             if (zoomed_in[x][y].red > 50 && zoomed_in[x][y].green > 50 && zoomed_in[x][y].blue < 40)
             {
-                Serial.print("\e[42m   "); // 42 = green
+                // Serial.print("\e[42m   "); // 42 = green
                 color_array[x][y] = green;
             }
-            else if (zoomed_in[x][y].red < 120 && zoomed_in[x][y].green < 120 && zoomed_in[x][y].blue < 120)
+            else if (zoomed_in[x][y].red < 100 && zoomed_in[x][y].green < 100 && zoomed_in[x][y].blue < 100)
             {
-                Serial.print("\e[40m   "); // 40 = white
-                color_array[x][y] = white;
-            }
-            else
-
-            {
-                Serial.print("\e[47m   "); // 47 = black
+                // Serial.print("\e[40m   "); // 40 = black
                 color_array[x][y] = black;
             }
+            else
+            {
+                // Serial.print("\e[47m   "); // 47 = white
+                color_array[x][y] = white;
+            }
         };
-        Serial.println("\e[0m"); // 0 = transparent
+        //   Serial.println("\e[0m"); // 0 = transparent
     }
-    Serial.println("converted color");
-};
-
-int **Camera::get_colored_image()
-{
-    int **col = new int *[24];
-    return col;
+    // Serial.println("converted color");
 };

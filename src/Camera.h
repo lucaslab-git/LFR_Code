@@ -19,8 +19,8 @@ struct pixel
 class Camera
 {
 private:
-    /* data */
 public:
+    color color_array[20][20];
     Camera();
     ~Camera();
     void init_camera();
@@ -28,5 +28,4 @@ public:
     void downscale();
     void zoom_in();
     void convert_to_color();
-    int **get_colored_image();
 };
