@@ -182,7 +182,7 @@ void Camera::convert_to_color()
                 // Serial.print("\e[42m   "); // 42 = green
                 color_array[x][y] = green;
             }
-            else if (zoomed_in[x][y].red < 100 && zoomed_in[x][y].green < 100 && zoomed_in[x][y].blue < 100)
+            else if (zoomed_in[x][y].red < 120 && zoomed_in[x][y].green < 120 && zoomed_in[x][y].blue < 120)
             {
                 // Serial.print("\e[40m   "); // 40 = black
                 color_array[x][y] = black;

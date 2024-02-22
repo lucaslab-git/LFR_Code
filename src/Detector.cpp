@@ -60,7 +60,7 @@ int Detector::detect_line_direction(Camera pcam)
             {
 
                 winkel = (letzer_index + i - 79) * 4.5;
-
+                letzer_index = letzer_index + i - 79;
                 break;
             }
         }
@@ -70,7 +70,7 @@ int Detector::detect_line_direction(Camera pcam)
             {
 
                 winkel = (letzer_index + i) * 4.5;
-
+                letzer_index = letzer_index + i;
                 break;
             }
         }
@@ -81,7 +81,7 @@ int Detector::detect_line_direction(Camera pcam)
             {
 
                 winkel = (letzer_index - i + 79) * 4.5;
-
+                letzer_index = letzer_index - i + 79;
                 break;
             }
         }
@@ -91,7 +91,7 @@ int Detector::detect_line_direction(Camera pcam)
             {
 
                 winkel = (letzer_index - i) * 4.5;
-
+                letzer_index = letzer_index - i;
                 break;
             }
         }

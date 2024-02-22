@@ -54,4 +54,5 @@ void loop()
   }
   String recived_text = Serial2.readString();
   Serial.println(recived_text);
+  
 }
