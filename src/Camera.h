@@ -9,6 +9,13 @@ enum color
     grey
 };
 
+struct pixel
+{
+    int red;
+    int green;
+    int blue;
+};
+
 class Camera
 {
 private:
@@ -21,5 +28,5 @@ public:
     void downscale();
     void zoom_in();
     void convert_to_color();
-    color get_colored_image(int index);
+    int **get_colored_image();
 };
