@@ -6,14 +6,13 @@
 #include "driver/rtc_io.h"
 #include <EEPROM.h>
 
+// define the connection pins for the Camera used in init_camera()
 #define EEPROM_SIZE 1
-
 #define PWDN_GPIO_NUM 32
 #define RESET_GPIO_NUM -1
 #define XCLK_GPIO_NUM 0
 #define SIOD_GPIO_NUM 26
 #define SIOC_GPIO_NUM 27
-
 #define Y9_GPIO_NUM 35
 #define Y8_GPIO_NUM 34
 #define Y7_GPIO_NUM 39
@@ -36,7 +35,6 @@ Camera::~Camera()
 
 void Camera::init_camera()
 {
-    // Set the Paramaters and Pins for the Camera
     camera_config_t config;
     config.ledc_channel = LEDC_CHANNEL_0;
     config.ledc_timer = LEDC_TIMER_0;
@@ -71,25 +69,28 @@ void Camera::init_camera()
     }
 }
 
-uint8_t *rgb_image = new uint8_t[57600]; // set limit 57600
+// Array to save rgb image each pixel has 3 values rgb 160px * 120px * 3 values = 57600
+uint8_t *rgb_image = new uint8_t[57600];
 
 void Camera::make_picture()
 {
-    camera_fb_t *fb = NULL;
+    camera_fb_t *image = NULL;
+    image = esp_camera_fb_get();
 
-    fb = esp_camera_fb_get();
-    if (!fb)
+    // check if capture was sucessfull
+    if (!image)
     {
         Serial.println("Camera capture failed");
         return;
     }
     else
     {
-        fmt2rgb888(fb->buf, fb->len, PIXFORMAT_JPEG, rgb_image);
-        Serial.println("Camera captured and stored");
+        // convert the (jpg) image to the rgb values
+        fmt2rgb888(image->buf, image->len, PIXFORMAT_JPEG, rgb_image);
+        // Serial.println("Camera captured and stored");
     }
-
-    esp_camera_fb_return(fb);
+    // return image becuase buffer overflow
+    esp_camera_fb_return(image);
 };
 
 uint8_t *downscaled_image = new uint8_t[2304]; // set limit 2304

@@ -32,6 +32,8 @@ void setup()
 
   cam.init_camera();
   cam.make_picture();
+
+  delay(1000);
   cam.downscale();
   cam.zoom_in();
   cam.convert_to_color();
@@ -52,4 +54,5 @@ void loop()
   }
   String recived_text = Serial2.readString();
   Serial.println(recived_text);
+  
 }

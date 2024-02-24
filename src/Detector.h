@@ -8,11 +8,18 @@ enum side
     none
 };
 
+struct area
+{
+    int start_winkel;
+    int median_winkel;
+    int end_winkel;
+};
+
 // color enum from cam
 class Detector
 {
 private:
-    int letzer_index = 0;
+    int letzer_winkel = 0;
 
 public:
     Detector();
