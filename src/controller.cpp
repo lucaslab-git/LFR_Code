@@ -7,7 +7,7 @@ Camera cam;
 Detector detector;
 
 #define DATA_PIN 15
-#define NUM_LEDS 4
+#define NUM_LEDS 6
 
 CRGB led[NUM_LEDS];
 
@@ -25,6 +25,8 @@ void setup()
   led[1] = CRGB(100, 100, 100);
   led[2] = CRGB(100, 100, 100);
   led[3] = CRGB(100, 100, 100);
+  led[4] = CRGB(100, 100, 100);
+  led[5] = CRGB(100, 100, 100);
 
   FastLED.show();
 
@@ -32,8 +34,8 @@ void setup()
 
   cam.init_camera();
   cam.make_picture();
-
-  delay(1000);
+  Serial2.println("drive_direction 0");
+  delay(100000000);
   cam.downscale();
   cam.zoom_in();
   cam.convert_to_color();

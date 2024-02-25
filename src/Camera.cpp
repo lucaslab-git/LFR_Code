@@ -125,17 +125,17 @@ void Camera::downscale()
             downscaled_image[outIndex] = static_cast<uint8_t>(avgR);
             downscaled_image[outIndex + 1] = static_cast<uint8_t>(avgG);
             downscaled_image[outIndex + 2] = static_cast<uint8_t>(avgB);
-            /*Serial.print("\e[48;2;");
+            Serial.print("\e[48;2;");
             Serial.print(avgR);
             Serial.print(";");
             Serial.print(avgG);
             Serial.print(";");
             Serial.print(avgB);
-            Serial.print("m   ");*/
+            Serial.print("m   ");
         }
-        // Serial.println("\e[0m");
+         Serial.println("\e[0m");
     }
-    // Serial.println("\e[1;31m downscaled sucessfully \e[1;37m");
+    Serial.println("\e[1;31m downscaled sucessfully \e[1;37m");
 };
 
 pixel zoomed_in[20][20];
@@ -151,23 +151,23 @@ void Camera::zoom_in()
             int green = downscaled_image[originalIndex + 1];
             int blue = downscaled_image[originalIndex + 2];
 
-            /*Serial.print("\e[48;2;");
+            Serial.print("\e[48;2;");
             Serial.print(red);
             Serial.print(";");
             Serial.print(green);
             Serial.print(";");
             Serial.print(blue);
-            Serial.print("m   ");*/
+            Serial.print("m   ");
             zoomed_in[x][y].red = red;
             zoomed_in[x][y].green = green;
             zoomed_in[x][y].blue = blue;
             originalIndex = originalIndex + 3;
         }
-        //  Serial.println("\e[0m");
+         Serial.println("\e[0m");
         originalIndex = originalIndex + 36;
     }
 
-    // Serial.println("\e[1;31m zoomed in sucessfully \e[1;37m");
+    Serial.println("\e[1;31m zoomed in sucessfully \e[1;37m");
 };
 
 // color color_array[24][24];                 // public attribut
