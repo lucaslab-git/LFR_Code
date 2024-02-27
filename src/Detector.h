@@ -19,9 +19,8 @@ struct area
 class Detector
 {
 private:
-    int letzer_winkel = 0;
-
 public:
+    int letzer_winkel = 0;
     Detector();
     ~Detector();
     int detect_line_direction(Camera pcam); // input colored_image in this function

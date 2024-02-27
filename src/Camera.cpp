@@ -85,6 +85,8 @@ void Camera::make_picture()
     if (!image)
     {
         Serial.println("Camera capture failed");
+        delay(200);
+        Serial2.println("motorstop ");
         return;
     }
     else
@@ -182,9 +184,9 @@ void Camera::convert_to_color()
     {
         for (int x = 0; x < 20; ++x)
         {
-            if ((zoomed_in[x][y].blue + 30) < zoomed_in[x][y].green)
+            if ((zoomed_in[x][y].blue + 25) < zoomed_in[x][y].green)
             {
-                // Serial.print("\e[42m   "); // 42 = green
+                Serial.print("\e[42m   "); // 42 = green
                 color_array[x][y] = green;
             }
             else if (zoomed_in[x][y].red < 100 && zoomed_in[x][y].green < 100 && zoomed_in[x][y].blue < 100)
@@ -200,5 +202,6 @@ void Camera::convert_to_color()
         };
         // Serial.println("\e[0m"); // 0 = transparent
     }
+    Serial.print("\e[0m");
     Serial.println("converted color");
 };

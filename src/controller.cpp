@@ -41,7 +41,7 @@ void setup()
   detector.detect_line_direction(cam);
   detector.detect_green_dot(cam);
 }
-
+int change_dir_green = 0;
 void loop()
 {
   cam.make_picture();
@@ -50,22 +50,26 @@ void loop()
   cam.zoom_in();
   cam.convert_to_color();
   String dir = String(detector.detect_line_direction(cam));
-  String green_dir = String(String(detector.detect_green_dot(cam)));
+  int green_dir = detector.detect_green_dot(cam);
 
-  Serial.println("green" + String(detector.detect_green_dot(cam)));
+  Serial.println("green " + String(detector.detect_green_dot(cam)));
 
-  if (green_dir != "361")
+  if (green_dir != 361)
   {
-    Serial2.println("drive_direction " + green_dir);
-    while (!Serial2.available())
+    if (change_dir_green <= 60)
     {
+      change_dir_green+=10;
+      detector.letzer_winkel = green_dir;
     }
-    String recived_text = Serial2.readString();
-    Serial.println(recived_text);
-    delay(1000);
+    Serial.println("drive_direction " + String(detector.letzer_winkel));
+    Serial2.println("drive_direction " + String(detector.letzer_winkel));
   }
   else
   {
+    if (change_dir_green != 0)
+    {
+      change_dir_green--;
+    }
     Serial2.println("drive_direction " + dir);
   }
 
