@@ -55,6 +55,14 @@ void loop()
   {
   }
   String recived_text = Serial2.readString();
+  for (int i = 0; i < 9; i++)
+  {
+    if (recived_text.indexOf("A" + String(i)) > 0)
+    {
+      Serial.println("switch is pressed: " + String(i));
+      delay(7000); // wait 7 sec for obstacle
+    }
+  }
+
   Serial.println(recived_text);
-  
 }
