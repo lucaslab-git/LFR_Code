@@ -119,7 +119,12 @@ int Detector::detect_line_direction(Camera pcam)
         if (difference < minDifference)
         {
             minDifference = difference;
-            winkel = areas[i].median_winkel;
+            if(areas[i].median_winkel < 45){
+                 winkel = areas[i].median_winkel - 45 + 360;// 45 degree mounting offset
+            }else{
+                winkel = areas[i].median_winkel - 45; // 45 degree mounting offset
+            }
+            
         }
     }
 

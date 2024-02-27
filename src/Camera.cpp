@@ -67,6 +67,9 @@ void Camera::init_camera()
         Serial.printf("Camera init failed with error 0x%x", err);
         return;
     }
+    sensor_t *s = esp_camera_sensor_get();
+
+    s->set_wb_mode(s, 2);
 }
 
 // Array to save rgb image each pixel has 3 values rgb 160px * 120px * 3 values = 57600
@@ -74,6 +77,7 @@ uint8_t *rgb_image = new uint8_t[57600];
 
 void Camera::make_picture()
 {
+
     camera_fb_t *image = NULL;
     image = esp_camera_fb_get();
 
@@ -125,17 +129,17 @@ void Camera::downscale()
             downscaled_image[outIndex] = static_cast<uint8_t>(avgR);
             downscaled_image[outIndex + 1] = static_cast<uint8_t>(avgG);
             downscaled_image[outIndex + 2] = static_cast<uint8_t>(avgB);
-            Serial.print("\e[48;2;");
+            /*Serial.print("\e[48;2;");
             Serial.print(avgR);
             Serial.print(";");
             Serial.print(avgG);
             Serial.print(";");
             Serial.print(avgB);
-            Serial.print("m   ");
+            Serial.print("m   ");*/
         }
-         Serial.println("\e[0m");
+        // Serial.println("\e[0m");
     }
-    Serial.println("\e[1;31m downscaled sucessfully \e[1;37m");
+    // Serial.println("\e[1;31m downscaled sucessfully \e[1;37m");
 };
 
 pixel zoomed_in[20][20];
@@ -163,7 +167,7 @@ void Camera::zoom_in()
             zoomed_in[x][y].blue = blue;
             originalIndex = originalIndex + 3;
         }
-         Serial.println("\e[0m");
+        Serial.println("\e[0m");
         originalIndex = originalIndex + 36;
     }
 
@@ -180,21 +184,21 @@ void Camera::convert_to_color()
         {
             if (zoomed_in[x][y].red > 50 && zoomed_in[x][y].green > 50 && zoomed_in[x][y].blue < 40)
             {
-                // Serial.print("\e[42m   "); // 42 = green
+                Serial.print("\e[42m   "); // 42 = green
                 color_array[x][y] = green;
             }
             else if (zoomed_in[x][y].red < 100 && zoomed_in[x][y].green < 100 && zoomed_in[x][y].blue < 100)
             {
-                // Serial.print("\e[40m   "); // 40 = black
+                Serial.print("\e[40m   "); // 40 = black
                 color_array[x][y] = black;
             }
             else
             {
-                // Serial.print("\e[47m   "); // 47 = white
+                Serial.print("\e[47m   "); // 47 = white
                 color_array[x][y] = white;
             }
         };
-        // Serial.println("\e[0m"); // 0 = transparent
+        Serial.println("\e[0m"); // 0 = transparent
     }
-    // Serial.println("converted color");
+    Serial.println("converted color");
 };

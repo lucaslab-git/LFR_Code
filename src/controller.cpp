@@ -21,12 +21,12 @@ void setup()
   Serial2.setTimeout(20);
   Serial.println("Serial init");
   FastLED.addLeds<WS2812B, DATA_PIN, GRB>(led, NUM_LEDS);
-  led[0] = CRGB(100, 100, 100);
-  led[1] = CRGB(100, 100, 100);
-  led[2] = CRGB(100, 100, 100);
-  led[3] = CRGB(100, 100, 100);
-  led[4] = CRGB(100, 100, 100);
-  led[5] = CRGB(100, 100, 100);
+  led[0] = CRGB(40, 40, 40);
+  led[1] = CRGB(40, 40, 40);
+  led[2] = CRGB(40, 40, 40);
+  led[3] = CRGB(40, 40, 40);
+  led[4] = CRGB(40, 40, 40);
+  led[5] = CRGB(40, 40, 40);
 
   FastLED.show();
 
@@ -34,8 +34,7 @@ void setup()
 
   cam.init_camera();
   cam.make_picture();
-  Serial2.println("drive_direction 0");
-  delay(100000000);
+ 
   cam.downscale();
   cam.zoom_in();
   cam.convert_to_color();
