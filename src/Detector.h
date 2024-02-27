@@ -25,5 +25,5 @@ public:
     Detector();
     ~Detector();
     int detect_line_direction(Camera pcam); // input colored_image in this function
-    side detect_green_dot();
+    int detect_green_dot(Camera pcam);
 };

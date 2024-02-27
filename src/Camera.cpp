@@ -155,23 +155,23 @@ void Camera::zoom_in()
             int green = downscaled_image[originalIndex + 1];
             int blue = downscaled_image[originalIndex + 2];
 
-            Serial.print("\e[48;2;");
-            Serial.print(red);
-            Serial.print(";");
-            Serial.print(green);
-            Serial.print(";");
-            Serial.print(blue);
-            Serial.print("m   ");
+            /* Serial.print("\e[48;2;");
+             Serial.print(red);
+             Serial.print(";");
+             Serial.print(green);
+             Serial.print(";");
+             Serial.print(blue);
+             Serial.print("m   ");*/
             zoomed_in[x][y].red = red;
             zoomed_in[x][y].green = green;
             zoomed_in[x][y].blue = blue;
             originalIndex = originalIndex + 3;
         }
-        Serial.println("\e[0m");
+        // Serial.println("\e[0m");
         originalIndex = originalIndex + 36;
     }
 
-    Serial.println("\e[1;31m zoomed in sucessfully \e[1;37m");
+    // Serial.println("\e[1;31m zoomed in sucessfully \e[1;37m");
 };
 
 // color color_array[24][24];                 // public attribut
@@ -182,23 +182,23 @@ void Camera::convert_to_color()
     {
         for (int x = 0; x < 20; ++x)
         {
-            if (zoomed_in[x][y].red > 50 && zoomed_in[x][y].green > 50 && zoomed_in[x][y].blue < 40)
+            if ((zoomed_in[x][y].blue + 30) < zoomed_in[x][y].green)
             {
-                Serial.print("\e[42m   "); // 42 = green
+                // Serial.print("\e[42m   "); // 42 = green
                 color_array[x][y] = green;
             }
             else if (zoomed_in[x][y].red < 100 && zoomed_in[x][y].green < 100 && zoomed_in[x][y].blue < 100)
             {
-                Serial.print("\e[40m   "); // 40 = black
+                // Serial.print("\e[40m   "); // 40 = black
                 color_array[x][y] = black;
             }
             else
             {
-                Serial.print("\e[47m   "); // 47 = white
+                // Serial.print("\e[47m   "); // 47 = white
                 color_array[x][y] = white;
             }
         };
-        Serial.println("\e[0m"); // 0 = transparent
+        // Serial.println("\e[0m"); // 0 = transparent
     }
     Serial.println("converted color");
 };
