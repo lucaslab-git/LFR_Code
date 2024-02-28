@@ -9,7 +9,7 @@ Detector::~Detector()
 {
 }
 
-int Detector::detect_line_direction(Camera pcam)
+double Detector::detect_line_direction(Camera pcam)
 {
 
     color rectangle_line_array[96];
@@ -107,11 +107,11 @@ int Detector::detect_line_direction(Camera pcam)
         // Berücksichtige den Übergang von 350 zu 0 Grad
         if (areas[i].median_winkel < letzer_winkel)
         {
-            difference = min(difference, abs(letzer_winkel - (areas[i].median_winkel + 360)));
+            difference = min(difference, abs(int(letzer_winkel) - (areas[i].median_winkel + 360)));
         }
         else
         {
-            difference = min(difference, abs(letzer_winkel - (areas[i].median_winkel - 360)));
+            difference = min(difference, abs(int(letzer_winkel) - (areas[i].median_winkel - 360)));
         }
 
         if (difference < minDifference)
@@ -129,11 +129,11 @@ int Detector::detect_line_direction(Camera pcam)
         }
     }
 
-    // Aktualisiere den am nächsten liegenden Winkel, falls notwendig
+    // hier vielleciht noch durchschnitt , so dass winkel nicht so stark gewichtet
     letzer_winkel = winkel;
     // Serial.print("Nähester Winkel: ");
-    // Serial.println(winkel);
-    return winkel;
+    Serial.println(letzer_winkel);
+    return letzer_winkel;
 };
 
 int Detector::detect_green_dot(Camera pcam)
@@ -144,47 +144,12 @@ int Detector::detect_green_dot(Camera pcam)
         for (int y = 0; y < 20; y++)
         {
             image[x][y] = pcam.color_array[x][y];
-        }
-    }
-
-    bool wait_for_black = false;
-    int xg;
-    int yg;
-    int dir_x;
-    int dir_y;
-    for (int i = 0; i <= 20 - 3; i++)
-    {
-        for (int j = 0; j <= 20 - 3; j++)
-        {
-            if (image[i][j] == green)
+            if (image[x][y] == green)
             {
-                wait_for_black = true;
-                xg = i;
-                yg = j;
-            }
-            if (image[i][j] == black && wait_for_black)
-            {
-                if (i > xg)
-                {
-                    dir_x = 90;
-                }
-                else
-                {
-                    dir_x = 270;
-                }
-
-                if (j > yg)
-                {
-                    dir_y = 0;
-                }
-                else
-                {
-                    dir_y = 180;
-                }
-
-                return ((dir_x + dir_y) / 2);
+                return 0;
             }
         }
     }
+
     return 361;
 }

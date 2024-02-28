@@ -2,6 +2,8 @@
 #include "Detector.h"
 #include "Camera.h"
 #include "FastLED.h"
+#include "soc/soc.h" // disable brownout detector
+#include "soc/rtc_cntl_reg.h"
 
 Camera cam;
 Detector detector;
@@ -44,7 +46,6 @@ void setup()
   Serial.println(Serial2.readString());
 }
 
-int change_dir_green = 0;
 void loop()
 {
   // Camera macht ein Foto
@@ -59,26 +60,17 @@ void loop()
   String dir = String(detector.detect_line_direction(cam));
   // Detector calculate the direction of green dot
   int green_dir = detector.detect_green_dot(cam);
-  Serial.print(" green " + String(green_dir));
-  // If Green was detected (not 361) the robot drives dir_green
+  // Serial.print(" green " + String(green_dir));
+  //  If Green was detected (not 361) the robot drives dir_green
   if (green_dir != 361)
   {
-    // Cooldown limit because green dot goes trought image
-    if (change_dir_green <= 600) // Wert für grün anpassen
-    {
-      change_dir_green += 100;
-      detector.letzer_winkel = green_dir;
-    }
 
-    Serial2.println("drive_direction " + String(detector.letzer_winkel));
+    Serial2.println("motorstop ");
+    delay(1000);
   }
   else
   {
-    // Cooldown from 60 cycles
-    if (change_dir_green != 0)
-    {
-      change_dir_green--;
-    }
+
     Serial2.println("drive_direction " + dir);
   }
 
