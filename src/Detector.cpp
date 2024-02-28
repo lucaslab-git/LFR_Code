@@ -69,7 +69,6 @@ int Detector::detect_line_direction(Camera pcam)
                     // Serial.print("\e[43m" + String(areas[count_area].end_winkel));
                     i = i + j;
                     count_area++;
-
                     break;
                 }
                 if (j > 0)
@@ -115,24 +114,25 @@ int Detector::detect_line_direction(Camera pcam)
             difference = min(difference, abs(letzer_winkel - (areas[i].median_winkel - 360)));
         }
 
-        // Aktualisiere den am nächsten liegenden Winkel, falls notwendig
         if (difference < minDifference)
         {
+            // Check if this calc is corrrect changed 28.02. 8.30
             minDifference = difference;
-            if (areas[i].median_winkel < 45)
+            if (areas[i].median_winkel > 315)
             {
-                winkel = areas[i].median_winkel - 45 + 360; // 45 degree mounting offset
+                winkel = areas[i].median_winkel + 45 - 360; // 45 degree mounting offset
             }
             else
             {
-                winkel = areas[i].median_winkel - 45; // 45 degree mounting offset
+                winkel = areas[i].median_winkel + 45; // 45 degree mounting offset
             }
         }
     }
 
+    // Aktualisiere den am nächsten liegenden Winkel, falls notwendig
     letzer_winkel = winkel;
-    Serial.print("Nähester Winkel: ");
-    Serial.println(winkel);
+    // Serial.print("Nähester Winkel: ");
+    // Serial.println(winkel);
     return winkel;
 };
 
@@ -153,13 +153,27 @@ int Detector::detect_green_dot(Camera pcam)
         {
 
             bool isGreenArea = true;
-            
+
+            // Minumum von einem 5x5 Feld wenn es nicht geht höher stellen
+            for (int x = i; x < i + 5; x++)
+            {
+                for (int y = j; y < j + 5; y++)
+                {
+                    if (image[x][y] != green)
+                    {
+                        isGreenArea = false;
+                        break;
+                    }
+                }
+                if (!isGreenArea)
+                    break;
+            }
+
             if (isGreenArea)
             {
-                // Calculate the angle from the center to the center of the found area
-                float centerX = i;                                             // Center of the found area
-                float centerY = j;                                             // Center of the found area
-                float angleRadians = atan2(10 - centerY, 10 - centerX) * 180 / PI; // Angle in radians
+                float centerX = i + 2.5;
+                float centerY = j + 2.5;
+                float angleRadians = atan2(10 - centerY, 10 - centerX) * 180 / PI;
                 return int(angleRadians);
             }
             else

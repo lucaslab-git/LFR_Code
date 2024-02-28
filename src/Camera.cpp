@@ -25,14 +25,17 @@
 #define HREF_GPIO_NUM 23
 #define PCLK_GPIO_NUM 22
 
+// construcor
 Camera::Camera()
 {
 }
 
+// destructor
 Camera::~Camera()
 {
 }
 
+// Init cam load all settings
 void Camera::init_camera()
 {
     camera_config_t config;
@@ -77,7 +80,6 @@ uint8_t *rgb_image = new uint8_t[57600];
 
 void Camera::make_picture()
 {
-
     camera_fb_t *image = NULL;
     image = esp_camera_fb_get();
 
@@ -93,14 +95,14 @@ void Camera::make_picture()
     {
         // convert the (jpg) image to the rgb values
         fmt2rgb888(image->buf, image->len, PIXFORMAT_JPEG, rgb_image);
-        // Serial.println("Camera captured and stored");
     }
     // return image becuase buffer overflow
     esp_camera_fb_return(image);
 };
 
-uint8_t *downscaled_image = new uint8_t[2304]; // set limit 2304
+uint8_t *downscaled_image = new uint8_t[2304]; // Array to downscale image 32px * 24px * 3 values = 2304
 
+// downscale image 1px = 5px x 5px
 void Camera::downscale()
 {
     memset(downscaled_image, 0, 2304);
@@ -144,8 +146,8 @@ void Camera::downscale()
     // Serial.println("\e[1;31m downscaled sucessfully \e[1;37m");
 };
 
+// zoom in image for better use with 2dim and cut away black edges
 pixel zoomed_in[20][20];
-
 void Camera::zoom_in()
 {
     int originalIndex = 210;
@@ -176,15 +178,16 @@ void Camera::zoom_in()
     // Serial.println("\e[1;31m zoomed in sucessfully \e[1;37m");
 };
 
-// color color_array[24][24];                 // public attribut
+// public atribute color color_array[24][24];
 
+// Convert rgb in color (white, green, black)
 void Camera::convert_to_color()
 {
     for (int y = 0; y < 20; ++y)
     {
         for (int x = 0; x < 20; ++x)
         {
-            if ((zoomed_in[x][y].blue + 25) < zoomed_in[x][y].green)
+            if ((zoomed_in[x][y].blue + 25) < zoomed_in[x][y].green) // change 25 maybe to 15 or 10
             {
                 Serial.print("\e[42m   "); // 42 = green
                 color_array[x][y] = green;
