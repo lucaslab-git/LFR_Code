@@ -98,7 +98,7 @@ int Detector::detect_line_direction(Camera pcam)
     }
 
     int minDifference = 360; // Initialisiere mit maximal möglichem Unterschied
-    int winkel;
+    int winkel = 0;
 
     for (int i = 0; i < count_area; i++)
     {
@@ -119,41 +119,53 @@ int Detector::detect_line_direction(Camera pcam)
         if (difference < minDifference)
         {
             minDifference = difference;
-            winkel = areas[i].median_winkel;
+            if (areas[i].median_winkel < 45)
+            {
+                winkel = areas[i].median_winkel - 45 + 360; // 45 degree mounting offset
+            }
+            else
+            {
+                winkel = areas[i].median_winkel - 45; // 45 degree mounting offset
+            }
         }
     }
 
     letzer_winkel = winkel;
     Serial.print("Nähester Winkel: ");
-    Serial.println(int(winkel));
-    return int(winkel);
+    Serial.println(winkel);
+    return winkel;
 };
 
-side Detector::detect_green_dot()
+int Detector::detect_green_dot(Camera pcam)
 {
-    for (int y = 0; y < 20; y++)
+    color image[20][20];
+    for (int x = 0; x < 20; x++)
     {
-        for (int x = 0; x < 20; x++)
+        for (int y = 0; y < 20; y++)
         {
-            if (1)
+            image[x][y] = pcam.color_array[x][y];
+        }
+    }
+
+    for (int i = 0; i <= 20 - 3; i++)
+    {
+        for (int j = 0; j <= 20 - 3; j++)
+        {
+
+            bool isGreenArea = true;
+            
+            if (isGreenArea)
             {
-                int green_count = 0;
-                for (int serch_y = 0; serch_y < 3; serch_y++)
-                {
-                    for (int serch_x = 0; serch_x < 3; serch_x++)
-                    {
-                        if (1)
-                        {
-                            green_count++;
-                            if (green_count > 3)
-                            {
-                                return left;
-                            }
-                        }
-                    }
-                }
+                // Calculate the angle from the center to the center of the found area
+                float centerX = i;                                             // Center of the found area
+                float centerY = j;                                             // Center of the found area
+                float angleRadians = atan2(10 - centerY, 10 - centerX) * 180 / PI; // Angle in radians
+                return int(angleRadians);
+            }
+            else
+            {
+                return 361;
             }
         }
-    };
-    return none;
+    }
 }
