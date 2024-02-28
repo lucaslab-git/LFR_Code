@@ -20,7 +20,7 @@ class Camera
 {
 private:
 public:
-    color color_array[20][20];
+    color color_array[24][24];
     Camera();
     ~Camera();
 

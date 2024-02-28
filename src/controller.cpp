@@ -59,15 +59,17 @@ void loop()
   String dir = String(detector.detect_line_direction(cam));
   // Detector calculate the direction of green dot
   int green_dir = detector.detect_green_dot(cam);
+  Serial.print(" green " + String(green_dir));
   // If Green was detected (not 361) the robot drives dir_green
   if (green_dir != 361)
   {
     // Cooldown limit because green dot goes trought image
-    if (change_dir_green <= 60) // Wert für grün anpassen
+    if (change_dir_green <= 600) // Wert für grün anpassen
     {
-      change_dir_green += 10;
+      change_dir_green += 100;
       detector.letzer_winkel = green_dir;
     }
+
     Serial2.println("drive_direction " + String(detector.letzer_winkel));
   }
   else

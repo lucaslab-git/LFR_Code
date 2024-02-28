@@ -147,32 +147,32 @@ void Camera::downscale()
 };
 
 // zoom in image for better use with 2dim and cut away black edges
-pixel zoomed_in[20][20];
+pixel zoomed_in[24][24];
 void Camera::zoom_in()
 {
-    int originalIndex = 210;
-    for (int y = 0; y < 20; ++y)
+    int originalIndex = 12;
+    for (int y = 0; y < 24; ++y)
     {
-        for (int x = 0; x < 20; ++x)
+        for (int x = 0; x < 24; ++x)
         {
             int red = downscaled_image[originalIndex];
             int green = downscaled_image[originalIndex + 1];
             int blue = downscaled_image[originalIndex + 2];
 
-            /* Serial.print("\e[48;2;");
-             Serial.print(red);
-             Serial.print(";");
-             Serial.print(green);
-             Serial.print(";");
-             Serial.print(blue);
-             Serial.print("m   ");*/
+            /*Serial.print("\e[48;2;");
+            Serial.print(red);
+            Serial.print(";");
+            Serial.print(green);
+            Serial.print(";");
+            Serial.print(blue);
+            Serial.print("m   ");*/
             zoomed_in[x][y].red = red;
             zoomed_in[x][y].green = green;
             zoomed_in[x][y].blue = blue;
             originalIndex = originalIndex + 3;
         }
         // Serial.println("\e[0m");
-        originalIndex = originalIndex + 36;
+        originalIndex = originalIndex + 24;
     }
 
     // Serial.println("\e[1;31m zoomed in sucessfully \e[1;37m");
@@ -183,13 +183,13 @@ void Camera::zoom_in()
 // Convert rgb in color (white, green, black)
 void Camera::convert_to_color()
 {
-    for (int y = 0; y < 20; ++y)
+    for (int y = 0; y < 24; ++y)
     {
-        for (int x = 0; x < 20; ++x)
+        for (int x = 0; x < 24; ++x)
         {
             if ((zoomed_in[x][y].blue + 25) < zoomed_in[x][y].green) // change 25 maybe to 15 or 10
             {
-                Serial.print("\e[42m   "); // 42 = green
+                // Serial.print("\e[40m   "); // 42 = green
                 color_array[x][y] = green;
             }
             else if (zoomed_in[x][y].red < 100 && zoomed_in[x][y].green < 100 && zoomed_in[x][y].blue < 100)
@@ -205,6 +205,6 @@ void Camera::convert_to_color()
         };
         // Serial.println("\e[0m"); // 0 = transparent
     }
-    Serial.print("\e[0m");
-    Serial.println("converted color");
+    // Serial.print("\e[0m");
+    // Serial.println("converted color");
 };
