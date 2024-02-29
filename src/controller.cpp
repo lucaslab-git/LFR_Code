@@ -44,6 +44,7 @@ void setup()
   {
   }
   Serial.println(Serial2.readString());
+
 }
 
 void loop()

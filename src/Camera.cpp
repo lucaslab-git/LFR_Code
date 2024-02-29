@@ -159,13 +159,13 @@ void Camera::zoom_in()
             int green = downscaled_image[originalIndex + 1];
             int blue = downscaled_image[originalIndex + 2];
 
-            /*Serial.print("\e[48;2;");
-            Serial.print(red);
-            Serial.print(";");
-            Serial.print(green);
-            Serial.print(";");
-            Serial.print(blue);
-            Serial.print("m   ");*/
+            /* Serial.print("\e[48;2;");
+             Serial.print(red);
+             Serial.print(";");
+             Serial.print(green);
+             Serial.print(";");
+             Serial.print(blue);
+             Serial.print("m   ");*/
             zoomed_in[x][y].red = red;
             zoomed_in[x][y].green = green;
             zoomed_in[x][y].blue = blue;
@@ -192,7 +192,7 @@ void Camera::convert_to_color()
                 // Serial.print("\e[40m   "); // 42 = green
                 color_array[x][y] = green;
             }
-            else if (zoomed_in[x][y].red < 100 && zoomed_in[x][y].green < 100 && zoomed_in[x][y].blue < 100)
+            else if (zoomed_in[x][y].red < 110 && zoomed_in[x][y].green < 110 && zoomed_in[x][y].blue < 110)
             {
                 // Serial.print("\e[40m   "); // 40 = black
                 color_array[x][y] = black;

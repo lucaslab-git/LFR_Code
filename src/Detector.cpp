@@ -129,11 +129,13 @@ double Detector::detect_line_direction(Camera pcam)
         }
     }
 
-    // hier vielleciht noch durchschnitt , so dass winkel nicht so stark gewichtet
+    /*
+
+   Serial.print("winkel Winkel: ");
+   Serial.println(int(winkel));
+*/
     letzer_winkel = winkel;
-    // Serial.print("Nähester Winkel: ");
-    Serial.println(letzer_winkel);
-    return letzer_winkel;
+    return int(winkel);
 };
 
 int Detector::detect_green_dot(Camera pcam)

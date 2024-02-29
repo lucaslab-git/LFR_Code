@@ -20,8 +20,8 @@ class Detector
 {
 private:
 public:
-    double letzer_winkel = 0;
-    int vorletzer_winkel = 0;
+    int letzer_winkel = 0;
+
     Detector();
     ~Detector();
     double detect_line_direction(Camera pcam); // input colored_image for calc
