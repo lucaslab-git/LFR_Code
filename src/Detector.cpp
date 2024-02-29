@@ -13,6 +13,18 @@ double Detector::detect_line_direction(Camera pcam)
 {
 
     color rectangle_line_array[96];
+    int anzahl_black = 0;
+    for (int x = 0; x < 24; x++)
+    {
+        for (int y = 0; y < 24; y++)
+        {
+            if (pcam.color_array[x][y] == black)
+            {
+                anzahl_black++;
+            }
+        }
+    }
+    Serial.printf(" anzahl black %d ", anzahl_black);
 
     // load the rectangle counterwise from upperleft in the 1d array
     for (int i = 0; i < 24; i++)
@@ -53,6 +65,7 @@ double Detector::detect_line_direction(Camera pcam)
     // gruop areas
     area areas[96];
     int count_area = 0;
+    int modifier_count = 0;
     for (int i = 0; i < 96; i++)
     {
         if (rectangle_line_array[i] == black)
@@ -63,12 +76,18 @@ double Detector::detect_line_direction(Camera pcam)
             for (int j = 0; j < 96; j++)
             {
 
+                if (areas[count_area].length > 10)
+                {
+                    modifier_count = 1;
+                }
+                areas[count_area].length++;
                 if (rectangle_line_array[i + j] != black && rectangle_line_array[i + j + 1] != black)
                 {
                     areas[count_area].end_winkel = (i + j) * 3.75;
                     // Serial.print("\e[43m" + String(areas[count_area].end_winkel));
                     i = i + j;
                     count_area++;
+
                     break;
                 }
                 if (j > 0)
@@ -86,6 +105,8 @@ double Detector::detect_line_direction(Camera pcam)
             // Serial.print("\e[0m   ");
         }
     }
+
+    count_area = count_area + modifier_count;
 
     // Serial.println("\e[0m");
 
@@ -128,13 +149,50 @@ double Detector::detect_line_direction(Camera pcam)
             }
         }
     }
+    Serial.printf("area count %d ", count_area);
 
+    int diff_angle;
+    for (int i = 0; i < 360; i++)
+    {
+        if (letzer_winkel + i > 360)
+        {
+            if (letzer_winkel + i - 360 == winkel)
+            {
+                if (i < 140 || i > 220)
+                {
+                    letzer_winkel = winkel;
+                    break;
+                }
+                else
+                {
+                    winkel = letzer_winkel;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            if (letzer_winkel + i == winkel)
+            {
+                if (i < 140 || i > 220)
+                {
+                    letzer_winkel = winkel;
+                    break;
+                }
+                else
+                {
+                    winkel = letzer_winkel;
+                    break;
+                }
+            }
+        }
+    }
     /*
 
    Serial.print("winkel Winkel: ");
    Serial.println(int(winkel));
-*/
-    letzer_winkel = winkel;
+    */
+
     return int(winkel);
 };
 

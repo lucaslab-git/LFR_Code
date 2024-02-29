@@ -13,12 +13,16 @@ struct area
     int start_winkel;
     int median_winkel;
     int end_winkel;
+    int length;
 };
 
 // color enum from cam
 class Detector
 {
 private:
+    bool ingap;
+    int gap_cooldown;
+
 public:
     int letzer_winkel = 0;
 

@@ -175,6 +175,22 @@ void Camera::zoom_in()
         originalIndex = originalIndex + 24;
     }
 
+    zoomed_in[0][0].red += 50;
+    zoomed_in[0][0].green += 50;
+    zoomed_in[0][0].blue += 50;
+
+    zoomed_in[0][23].red += 50;
+    zoomed_in[0][23].green += 50;
+    zoomed_in[0][23].blue += 50;
+
+    zoomed_in[23][23].red += 50;
+    zoomed_in[23][23].green += 50;
+    zoomed_in[23][23].blue += 50;
+
+    zoomed_in[23][0].red += 50;
+    zoomed_in[23][0].green += 50;
+    zoomed_in[23][0].blue += 50;
+
     // Serial.println("\e[1;31m zoomed in sucessfully \e[1;37m");
 };
 
@@ -192,7 +208,7 @@ void Camera::convert_to_color()
                 // Serial.print("\e[40m   "); // 42 = green
                 color_array[x][y] = green;
             }
-            else if (zoomed_in[x][y].red < 110 && zoomed_in[x][y].green < 110 && zoomed_in[x][y].blue < 110)
+            else if (zoomed_in[x][y].red < 100 && zoomed_in[x][y].green < 100 && zoomed_in[x][y].blue < 100)
             {
                 // Serial.print("\e[40m   "); // 40 = black
                 color_array[x][y] = black;
