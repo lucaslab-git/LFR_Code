@@ -59,19 +59,10 @@ void loop()
   // Detector calculate the direction of black line
   String dir = String(detector.detect_line_direction(cam));
   // Detector calculate the direction of green dot
-  int green_dir = detector.detect_green_dot(cam);
+  // int green_dir = detector.detect_green_dot(cam);
   // Serial.print(" green " + String(green_dir));
-  //  If Green was detected (not 361) the robot drives dir_green
-  if (green_dir != 361)
-  {
 
-    Serial2.println("drive_direction " + green_dir);
-  }
-  else
-  {
-
-    Serial2.println("drive_direction " + dir);
-  }
+  Serial2.println("drive_direction " + dir);
 
   // wait for arduino to answer
   while (!Serial2.available())

@@ -206,39 +206,70 @@ int Detector::detect_green_dot(Camera pcam)
             image[x][y] = pcam.color_array[x][y];
         }
     }
+
+    bool wait_for_black = false;
+    int xg;
+    int yg;
+    int dir_x;
+    int dir_y;
     for (int i = 0; i <= 20 - 3; i++)
     {
         for (int j = 0; j <= 20 - 3; j++)
         {
 
             bool isGreenArea = true;
-            for (int x = i; x < i + 3; x++)
-            {
-                for (int y = j; y < j + 3; y++)
-                {
-                    if (image[x][y] != green)
-                    {
-                        isGreenArea = false;
-                        break;
-                    }
-                }
-                if (!isGreenArea)
-                    break;
-            }
 
+            // Minumum von einem 5x5 Feld wenn es nicht geht höher stellen
+            for (int x = i; x < i + 5; x++)
+            {
+                if (image[i][j] == green)
+                {
+                    wait_for_black = true;
+                    xg = i;
+                    yg = j;
+                }
+                if (image[i][j] == black && wait_for_black)
+                {
+                    for (int y = j; y < j + 5; y++)
+                        if (i > xg)
+                        {
+                            if (image[x][y] != green)
+                            {
+                                isGreenArea = false;
+                                break;
+                            }
+                            dir_x = 90;
+                        }
+                        else
+                        {
+                            dir_x = 270;
+                        }
+                    if (!isGreenArea)
+                        break;
+                }
+            }
             if (isGreenArea)
             {
-                // Calculate the angle from the center to the center of the found area
-                float centerX = i + 1.5;                                           // Center of the found area
-                float centerY = j + 1.5;                                           // Center of the found area
-                                                           // Center of the found area
-                float angleRadians = atan2(10 - centerY, 10 - centerX) * 180 / PI; // Angle in radians
+                float centerX = i + 2.5;
+                float centerY = j + 2.5;
+                float angleRadians = atan2(10 - centerY, 10 - centerX) * 180 / PI;
                 return int(angleRadians);
             }
             else
             {
                 return 361;
+                if (j > yg)
+                {
+                    dir_y = 0;
+                }
+                else
+                {
+                    dir_y = 180;
+                }
+
+                return ((dir_x + dir_y) / 2);
             }
         }
     }
+    return 361;
 }
