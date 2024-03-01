@@ -231,8 +231,7 @@ int Detector::detect_green_dot(Camera pcam)
                 // Calculate the angle from the center to the center of the found area
                 float centerX = i + 1.5;                                           // Center of the found area
                 float centerY = j + 1.5;                                           // Center of the found area
-                float centerX = i;                                                 // Center of the found area
-                float centerY = j;                                                 // Center of the found area
+                                                           // Center of the found area
                 float angleRadians = atan2(10 - centerY, 10 - centerX) * 180 / PI; // Angle in radians
                 return int(angleRadians);
             }
