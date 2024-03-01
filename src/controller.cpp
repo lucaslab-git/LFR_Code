@@ -44,7 +44,6 @@ void setup()
   {
   }
   Serial.println(Serial2.readString());
-
 }
 
 void loop()
@@ -66,8 +65,7 @@ void loop()
   if (green_dir != 361)
   {
 
-    Serial2.println("motorstop ");
-    delay(1000);
+    Serial2.println("drive_direction " + green_dir);
   }
   else
   {

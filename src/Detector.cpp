@@ -204,12 +204,42 @@ int Detector::detect_green_dot(Camera pcam)
         for (int y = 0; y < 20; y++)
         {
             image[x][y] = pcam.color_array[x][y];
-            if (image[x][y] == green)
+        }
+    }
+    for (int i = 0; i <= 20 - 3; i++)
+    {
+        for (int j = 0; j <= 20 - 3; j++)
+        {
+
+            bool isGreenArea = true;
+            for (int x = i; x < i + 3; x++)
             {
-                return 0;
+                for (int y = j; y < j + 3; y++)
+                {
+                    if (image[x][y] != green)
+                    {
+                        isGreenArea = false;
+                        break;
+                    }
+                }
+                if (!isGreenArea)
+                    break;
+            }
+
+            if (isGreenArea)
+            {
+                // Calculate the angle from the center to the center of the found area
+                float centerX = i + 1.5;                                           // Center of the found area
+                float centerY = j + 1.5;                                           // Center of the found area
+                float centerX = i;                                                 // Center of the found area
+                float centerY = j;                                                 // Center of the found area
+                float angleRadians = atan2(10 - centerY, 10 - centerX) * 180 / PI; // Angle in radians
+                return int(angleRadians);
+            }
+            else
+            {
+                return 361;
             }
         }
     }
-
-    return 361;
 }
