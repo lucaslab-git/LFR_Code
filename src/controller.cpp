@@ -22,7 +22,7 @@ void setup()
   Serial.begin(115200);
   Serial2.begin(9600, SERIAL_8N1, RXp2, TXp2);
   Serial2.setTimeout(20);
-  Serial.println("Welcome, start of program");
+  // Serial.println("Welcome, start of program");
 
   // Turn on LED-ring for Camera
   FastLED.addLeds<WS2812B, DATA_PIN, GRB>(led, NUM_LEDS);
